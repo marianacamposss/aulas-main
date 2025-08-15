@@ -28,7 +28,7 @@
 
     <header class="bg-[#3D1E8D] h-20 shadow-md flex justify-between items-center px-6 sm:px-8 lg:px-12">
         <div class="flex items-center space-x-4 md:space-x-5">
-            <a href="../miniaulas/index.html" class="text-[#E8E1CF] hover:opacity-75">
+            <a href="../aulainterativa/index.html" class="text-[#E8E1CF] hover:opacity-75">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                     stroke="currentColor" class="w-7 h-7">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
@@ -197,13 +197,13 @@
                         <li
                             class="flex items-center space-x-3 text-[#E8E1CF] opacity-90 hover:opacity-100 transition-opacity duration-200">
                             <span class="text-[#A78BFA]">🔗</span>
-                            <a href="https://www.youtube.com/watch?si=7_ZBf4W9B0mWMHnx&embeds_referring_euri=https%3A%2F%2Fbr.video.search.yahoo.com%2F&embeds_referring_origin=https%3A%2F%2Fbr.video.search.yahoo.com&source_ve_path=Mjg2NjQsMTY0NTA2&v=mliOxA90zNM&feature=youtu.be" target="_blank"
+                            <a href="https://www.youtube.com/watch?v=mliOxA90zNM" target="_blank"
                                 class="underline">COMO ORGANIZAR AS IDEIAS NA REDAÇÃO? com Profa. Pamba</a>
                         </li>
                         <li
                             class="flex items-center space-x-3 text-[#E8E1CF] opacity-90 hover:opacity-100 transition-opacity duration-200">
                             <span class="text-[#A78BFA]">🎬</span>
-                            <a href="https://youtu.be/cFuqU8vgQBc?si=C5GT9NhLJKmJT8Gg" target="_blank"
+                            <a href="https://youtu.be/cFuqU8vgQBc" target="_blank"
                                 class="underline">Aula Top | Redação| Progressão Textual | Prof. Antônio Wanderley</a>
                         </li>
                         <li
@@ -232,21 +232,22 @@
         document.getElementById('currentPointsHeader').innerText = currentPoints;
 
         // Lógica da barra de progresso e navegação lateral
+        const mainContent = document.getElementById('main-content');
         const topics = document.querySelectorAll('section[id]');
         const progressBar = document.querySelector('#progress-bar div');
         const navLinks = document.querySelectorAll('#topic-navigation a');
 
         function updateProgressBar() {
-            const viewportHeight = window.innerHeight;
-            const scrollPosition = window.scrollY || document.documentElement.scrollTop;
-            const totalHeight = document.documentElement.scrollHeight - viewportHeight;
+            const scrollPosition = mainContent.scrollTop;
+            const totalHeight = mainContent.scrollHeight - mainContent.clientHeight;
             const scrollPercentage = (scrollPosition / totalHeight) * 100;
             progressBar.style.width = scrollPercentage + '%';
 
             let currentTopicId = '';
             topics.forEach(topic => {
-                const topicTop = topic.offsetTop - 100;
-                if (scrollPosition >= topicTop) {
+                // top of the element relative to the scrolling container
+                const topicTop = topic.offsetTop; 
+                if (scrollPosition >= topicTop - 100) {
                     currentTopicId = topic.id;
                 }
             });
@@ -259,8 +260,11 @@
             });
         }
 
-        window.addEventListener('scroll', updateProgressBar);
-        window.addEventListener('load', updateProgressBar);
+        // Adiciona o listener de scroll ao elemento main-content
+        mainContent.addEventListener('scroll', updateProgressBar);
+        // Atualiza a barra de progresso no carregamento
+        document.addEventListener('DOMContentLoaded', updateProgressBar);
+
 
         // Lógica do Quiz
         const quizForm = document.getElementById('quiz-form');
@@ -274,18 +278,18 @@
                 const correctAnswer = 'b'; // A resposta correta é a B
 
                 if (userAnswer === correctAnswer) {
-                    quizFeedback.classList.remove('hidden', 'bg-red-500');
-                    quizFeedback.classList.add('bg-green-500');
-                    quizFeedback.innerHTML = '<p class="text-black font-bold">Parabéns, detetive! A frase B é incoerente porque a tecnologia ter evoluído não é um obstáculo para usarmos computadores. O conectivo "no entanto" cria uma oposição que não existe.</p>';
+                    quizFeedback.classList.remove('hidden', 'bg-[#7254B4]', 'bg-[#A78BFA]');
+                    quizFeedback.classList.add('bg-[#2A0F5E]');
+                    quizFeedback.innerHTML = '<p class="text-[#E8E1CF] font-bold">Parabéns, detetive! A frase B é incoerente porque a tecnologia ter evoluído não é um obstáculo para usarmos computadores. O conectivo "no entanto" cria uma oposição que não existe.</p>';
                 } else {
-                    quizFeedback.classList.remove('hidden', 'bg-green-500');
-                    quizFeedback.classList.add('bg-red-500');
-                    quizFeedback.innerHTML = '<p class="text-black font-bold">Quase lá! A frase incoerente é a B. O conectivo "no entanto" sugere uma contradição que não faz sentido no contexto. Continue praticando, a coerência é uma questão de treino!</p>';
+                    quizFeedback.classList.remove('hidden', 'bg-[#2A0F5E]', 'bg-[#A78BFA]');
+                    quizFeedback.classList.add('bg-[#7254B4]');
+                    quizFeedback.innerHTML = '<p class="text-[#E8E1CF] font-bold">Quase lá! A frase incoerente é a B. O conectivo "no entanto" sugere uma contradição que não faz sentido no contexto. Continue praticando, a coerência é uma questão de treino!</p>';
                 }
             } else {
-                quizFeedback.classList.remove('hidden', 'bg-green-500', 'bg-red-500');
-                quizFeedback.classList.add('bg-yellow-500');
-                quizFeedback.innerHTML = '<p class="text-black font-bold">Por favor, selecione uma opção antes de responder!</p>';
+                quizFeedback.classList.remove('hidden', 'bg-[#2A0F5E]', 'bg-[#7254B4]');
+                quizFeedback.classList.add('bg-[#A78BFA]');
+                quizFeedback.innerHTML = '<p class="text-[#2A0F5E] font-bold">Por favor, selecione uma opção antes de responder!</p>';
             }
         });
     </script>
